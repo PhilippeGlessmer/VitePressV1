@@ -12,6 +12,21 @@ export default {
     })
   },
   enhanceApp({ app, router, siteData }) {
-    // ...
+    // Ajouter le code pour gérer les liens avec target _blank
+    if (typeof window !== 'undefined') {
+      router.onAfterRouteChanged = () => {
+        // Sélectionner tous les liens dans la sidebar
+        const sidebarLinks = document.querySelectorAll('.sidebar a')
+
+        sidebarLinks.forEach(link => {
+          const href = link.getAttribute('href')
+          // Ajouter target _blank aux liens externes et spécifiques
+          if (href && (href.startsWith('http') || href === '/api-examples')) {
+            link.setAttribute('target', '_blank')
+            link.setAttribute('rel', 'noopener noreferrer')
+          }
+        })
+      }
+    }
   }
 } satisfies Theme
