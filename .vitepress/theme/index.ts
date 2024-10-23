@@ -1,5 +1,5 @@
 // https://vitepress.dev/guide/custom-theme
-import { h } from 'vue'
+import { h, onMounted } from 'vue'
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import './style.css'
@@ -12,7 +12,7 @@ export default {
     })
   },
   enhanceApp({ app, router, siteData }) {
-    // Ajouter le code pour gérer les liens avec target _blank
+    // Gestion des liens avec target _blank
     if (typeof window !== 'undefined') {
       router.onAfterRouteChanged = () => {
         // Sélectionner tous les liens dans la sidebar
@@ -28,5 +28,34 @@ export default {
         })
       }
     }
+
+    // Gestion du comportement accordéon dans la sidebar
+    onMounted(() => {
+      const collapsibleGroups = document.querySelectorAll('.sidebar .group.collapsible')
+
+      collapsibleGroups.forEach(group => {
+        const title = group.querySelector('.title')
+        const itemsWrapper = group.querySelector('.items-wrapper')
+
+        // Gérer le clic pour ouvrir/fermer le groupe
+        title?.addEventListener('click', () => {
+          const isCollapsed = group.classList.contains('collapsed')
+          if (isCollapsed) {
+            group.classList.remove('collapsed')
+            itemsWrapper.style.height = itemsWrapper.scrollHeight + 'px'
+          } else {
+            group.classList.add('collapsed')
+            itemsWrapper.style.height = '0px'
+          }
+        })
+
+        // Initialiser la hauteur pour les groupes déjà fermés
+        if (group.classList.contains('collapsed')) {
+          itemsWrapper.style.height = '0px'
+        } else {
+          itemsWrapper.style.height = itemsWrapper.scrollHeight + 'px'
+        }
+      })
+    })
   }
 } satisfies Theme

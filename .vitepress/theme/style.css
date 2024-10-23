@@ -136,3 +136,21 @@
 .DocSearch {
   --docsearch-primary-color: var(--vp-c-brand-1) !important;
 }
+/* Ajouter un style pour l'effet d'animation accordéon */
+.sidebar .group.collapsible .title {
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.sidebar .group.collapsible .title:hover {
+  color: var(--vp-c-brand);
+}
+
+.sidebar .group.collapsible .items-wrapper {
+  transition: height 0.3s ease;
+  overflow: hidden;
+}
+
+.sidebar .group.collapsible.collapsed .items-wrapper {
+  height: 0;
+}
